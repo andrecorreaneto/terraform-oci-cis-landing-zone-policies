@@ -30,7 +30,7 @@ module "cislz_policies" {
   ]
 
   dynamic_groups = [
-    {"name":"cislandingzone-iam-admin-dynamic-group", "freeform_tags":{"roles":"dyn-compute-agent"}},
-    {"name":"cislandingzone-cred-admin-dynamic-group","freeform_tags":{"roles":"dyn-database-kms"}}
+    {"name":"cislandingzone-appdev-computeagent-dynamic-group", "freeform_tags":{"roles":"dyn-compute-agent"}},
+    {"name":"cislandingzone-database-kms-dynamic-group","freeform_tags":{"roles":"dyn-database-kms"}}
   ]  
 }

@@ -113,3 +113,13 @@ variable "storage_admin_policy_name" {
   type = string
   default = null
 }
+
+variable "compute_agent_policy_name" {
+  type = string
+  default = null
+}
+
+variable "database_kms_policy_name" {
+  type = string
+  default = null
+}

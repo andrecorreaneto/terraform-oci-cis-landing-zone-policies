@@ -471,8 +471,17 @@ locals {
   } : {}                              
 
   #--------------------------------------------------------------------------------------------
-  #-- Dynamic groups grants
+  #-- Dynamic groups policies
   #--------------------------------------------------------------------------------------------
+
+  #--------------------------------------------------------------------------------------------
+  #-- Compute Agent policy
+  #--------------------------------------------------------------------------------------------
+  #-- Naming
+  compute_agent_policy_key = "${var.policy_name_prefix}-compute-agent-policy"
+  default_compute_agent_policy_name = "compute-agent-policy"
+  compute_agent_policy_name = var.compute_agent_policy_name != null ? var.compute_agent_policy_name : "${var.policy_name_prefix}-${local.default_compute_agent_policy_name}"
+
   #-- Compute Agent grants
   compute_agent_grants = contains(keys(local.dyn_group_tag_map),local.dyn_compute_agent_tag) && contains(keys(local.cmp_tag_map),local.application_cmp_tag) ? [
     "allow dynamic-group ${local.dyn_group_tag_map[local.dyn_compute_agent_tag]} to manage management-agents in compartment ${local.cmp_tag_map[local.application_cmp_tag]}",
@@ -480,18 +489,50 @@ locals {
     "allow dynamic-group ${local.dyn_group_tag_map[local.dyn_compute_agent_tag]} to use tag-namespaces in compartment ${local.cmp_tag_map[local.application_cmp_tag]}"
   ] : []
 
-  #-- ADB grants
-  autonomous_database_grants = contains(keys(local.dyn_group_tag_map),local.dyn_database_kms_tag) && contains(keys(local.cmp_tag_map),local.security_cmp_tag) ? [
+  #-- Policy
+  compute_agent_policy = length(local.compute_agent_grants) > 0 ? {
+    (local.compute_agent_policy_key) = {
+      name           = local.compute_agent_policy_name
+      compartment_id = data.oci_identity_compartments.application[0].compartments[0].compartment_id
+      description    = "CIS Landing Zone policy for Compute Agent dynamic group."
+      defined_tags   = var.defined_tags
+      freeform_tags  = var.freeform_tags
+      statements     = local.compute_agent_grants
+    }
+  } : {}
+
+  #--------------------------------------------------------------------------------------------
+  #-- Database KMS policy
+  #--------------------------------------------------------------------------------------------
+  #-- Naming
+  database_kms_policy_key = "${var.policy_name_prefix}-database-kms-policy"
+  default_database_kms_policy_name = "database-kms-policy"
+  database_kms_policy_name = var.database_kms_policy_name != null ? var.database_kms_policy_name : "${var.policy_name_prefix}-${local.default_database_kms_policy_name}"
+  
+  #-- The grants
+  database_kms_grants = contains(keys(local.dyn_group_tag_map),local.dyn_database_kms_tag) && contains(keys(local.cmp_tag_map),local.security_cmp_tag) ? [
     "allow dynamic-group ${local.dyn_group_tag_map[local.dyn_database_kms_tag]} to read vaults in compartment ${local.cmp_tag_map[local.security_cmp_tag]}",
     "allow dynamic-group ${local.dyn_group_tag_map[local.dyn_database_kms_tag]} to use keys in compartment ${local.cmp_tag_map[local.security_cmp_tag]}"
   ] : []
+
+  #-- Policy
+  database_kms_policy = length(local.database_kms_grants) > 0 ? {
+    (local.database_kms_policy_key) = {
+      name           = local.database_kms_policy_name
+      compartment_id = data.oci_identity_compartments.security[0].compartments[0].compartment_id
+      description    = "CIS Landing Zone policy for Database KMS dynamic group."
+      defined_tags   = var.defined_tags
+      freeform_tags  = var.freeform_tags
+      statements     = local.database_kms_grants
+    }
+  } : {}
 
   #--------------------------------------------------------------------------------------------
   #-- Final policies
   #--------------------------------------------------------------------------------------------  
   policies = merge(local.iam_admin_policy, local.security_admin_policy, local.network_admin_policy,
                    local.appdev_admin_policy, local.database_admin_policy, local.exainfra_admin_policy,
-                   local.storage_admin_policy)
+                   local.storage_admin_policy, local.compute_agent_policy, local.database_kms_policy)
 
 }
 

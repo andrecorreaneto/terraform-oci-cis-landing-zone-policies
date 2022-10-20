@@ -215,8 +215,8 @@ locals {
   #-- Announcement reader policy
   #--------------------------------------------------------------------------------------------
   #-- Naming
-  announcement_reader_policy_key = "${var.policy_name_prefix}-announcement_reader-policy"
-  default_announcement_reader_policy_name = "announcement_reader-policy"
+  announcement_reader_policy_key = "${var.policy_name_prefix}-announcement-reader-policy"
+  default_announcement_reader_policy_name = "announcement-reader-policy"
   announcement_reader_policy_name = var.announcement_reader_policy_name != null ? var.announcement_reader_policy_name : "${var.policy_name_prefix}-${local.default_announcement_reader_policy_name}"
 
   #-- Grants

@@ -13,7 +13,7 @@ locals {
   exainfra_admin_tag      = "exainfra-admin"
   storage_admin_tag       = "storage-admin"
   auditor_tag             = "auditor"
-  announcement_reader_tag = "announcement_reader"
+  announcement_reader_tag = "announcement-reader"
 
   #-- Dynamic Group tags
   dyn_compute_agent_tag   = "dyn-compute-agent"

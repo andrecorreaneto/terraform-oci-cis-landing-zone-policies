@@ -155,7 +155,7 @@ locals {
 
   #-- Policy
   network_admin_policy = length(local.network_admin_grants) > 0 ? {
-    (local.security_admin_policy_key) = {
+    (local.network_admin_policy_key) = {
       name           = local.network_admin_policy_name
       compartment_id = data.oci_identity_compartments.network[0].compartments[0].compartment_id
       description    = "CIS Landing Zone policy for Network administrators."

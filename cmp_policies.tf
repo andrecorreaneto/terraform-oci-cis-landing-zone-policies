@@ -24,7 +24,7 @@ locals {
     (local.iam_admin_policy_key) = {
       name           = local.iam_admin_policy_name
       compartment_id = data.oci_identity_compartments.enclosing[0].compartments[0].id
-      description    = "CIS Landing Zone compartment policy for IAM administrators."
+      description    = "CIS Landing Zone policy for IAM administrators."
       defined_tags   = var.defined_tags
       freeform_tags  = var.freeform_tags
       statements     = local.iam_admin_grants
@@ -97,7 +97,7 @@ locals {
     (local.security_admin_policy_key) = {
       name           = local.security_admin_policy_name
       compartment_id = data.oci_identity_compartments.security[0].compartments[0].compartment_id
-      description    = "CIS Landing Zone compartment policy for Security administrators."
+      description    = "CIS Landing Zone policy for Security administrators."
       defined_tags   = var.defined_tags
       freeform_tags  = var.freeform_tags
       statements     = local.security_admin_grants
@@ -158,7 +158,7 @@ locals {
     (local.security_admin_policy_key) = {
       name           = local.network_admin_policy_name
       compartment_id = data.oci_identity_compartments.network[0].compartments[0].compartment_id
-      description    = "CIS Landing Zone compartment policy for Network administrators."
+      description    = "CIS Landing Zone policy for Network administrators."
       defined_tags   = var.defined_tags
       freeform_tags  = var.freeform_tags
       statements     = local.network_admin_grants
@@ -241,7 +241,7 @@ locals {
     (local.database_admin_policy_key) = {
       name           = local.database_admin_policy_name
       compartment_id = data.oci_identity_compartments.database[0].compartments[0].compartment_id
-      description    = "CIS Landing Zone compartment policy for Database administrators."
+      description    = "CIS Landing Zone policy for Database administrators."
       defined_tags   = var.defined_tags
       freeform_tags  = var.freeform_tags
       statements     = local.database_admin_grants
@@ -329,7 +329,7 @@ locals {
     (local.appdev_admin_policy_key) = {
       name           = local.appdev_admin_policy_name
       compartment_id = data.oci_identity_compartments.application[0].compartments[0].compartment_id
-      description    = "CIS Landing Zone compartment policy for Application administrators."
+      description    = "CIS Landing Zone policy for Application administrators."
       defined_tags   = var.defined_tags
       freeform_tags  = var.freeform_tags
       statements     = local.appdev_admin_grants
@@ -382,7 +382,7 @@ locals {
     (local.exainfra_admin_policy_key) = {
       name           = local.exainfra_admin_policy_name
       compartment_id = data.oci_identity_compartments.exainfra[0].compartments[0].compartment_id
-      description    = "CIS Landing Zone compartment policy for Exadata Cloud Service infrastructure administrators."
+      description    = "CIS Landing Zone policy for Exadata Cloud Service infrastructure administrators."
       defined_tags   = var.defined_tags
       freeform_tags  = var.freeform_tags
       statements     = local.exainfra_admin_grants
@@ -463,7 +463,7 @@ locals {
     (local.storage_admin_policy_key) = {
       name           = local.storage_admin_policy_name
       compartment_id = data.oci_identity_compartments.network[0].compartments[0].compartment_id ############## REVIEW THIS
-      description    = "CIS Landing Zone compartment policy for Storage administrators."
+      description    = "CIS Landing Zone policy for Storage administrators."
       defined_tags   = var.defined_tags
       freeform_tags  = var.freeform_tags
       statements     = local.storage_admin_grants

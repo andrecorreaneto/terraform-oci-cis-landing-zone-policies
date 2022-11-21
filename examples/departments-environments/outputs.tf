@@ -2,9 +2,9 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 output "cmp_name_to_cislz_tag_map" {
-  value = module.cislz_policies.map_of_compartments_tagged_with_cislz_tag_lookup_value
+  value = module.cislz_policies.cmp_name_to_cislz_tag_map
 }
 
 output "cmp_type_list" {
-  value = module.cislz_policies.list_of_compartments_types_tagged_with_cislz_tag_lookup_value
+  value = module.cislz_policies.cmp_type_list
 }

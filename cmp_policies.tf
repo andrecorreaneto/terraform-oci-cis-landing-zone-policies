@@ -1,15 +1,15 @@
 # Copyright (c) 2022 Oracle and/or its affiliates.
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
-
+/* 
 locals {
 
   #--------------------------------------------------------------------------------------------
   #-- IAM admin policy
   #--------------------------------------------------------------------------------------------
   #-- Naming
-  iam_admin_policy_key = "${var.policy_name_prefix}-iam-admin-policy"
+  iam_admin_policy_key = "${var.cislz_tag_lookup_value}-iam-admin-policy"
   default_iam_admin_policy_name = "iam-admin-policy"
-  iam_admin_policy_name = var.iam_admin_policy_name != null ? var.iam_admin_policy_name : "${var.policy_name_prefix}-${local.default_iam_admin_policy_name}"
+  iam_admin_policy_name = var.iam_admin_policy_name != null ? var.iam_admin_policy_name : "${var.cislz_tag_lookup_value}-${local.default_iam_admin_policy_name}"
 
   #-- IAM admin grants at the enclosing compartment level, which *can* be the root compartment
   iam_admin_grants_on_enclosing_cmp = contains(keys(local.group_tag_map),local.iam_admin_tag) ? [
@@ -35,9 +35,9 @@ locals {
   #-- Security admin policy
   #--------------------------------------------------------------------------------------------
   #-- Naming
-  security_admin_policy_key = "${var.policy_name_prefix}-security-admin-policy"
+  security_admin_policy_key = "${var.cislz_tag_lookup_value}-security-admin-policy"
   default_security_admin_policy_name = "security-admin-policy"
-  security_admin_policy_name = var.security_admin_policy_name != null ? var.security_admin_policy_name : "${var.policy_name_prefix}-${local.default_security_admin_policy_name}"
+  security_admin_policy_name = var.security_admin_policy_name != null ? var.security_admin_policy_name : "${var.cislz_tag_lookup_value}-${local.default_security_admin_policy_name}"
 
   #-- Security admin grants at the enclosing compartment level, which *can* be the root compartment
   security_admin_grants_on_enclosing_cmp = contains(keys(local.group_tag_map),local.security_admin_tag) ? [
@@ -108,9 +108,9 @@ locals {
   #-- Network admin policy
   #--------------------------------------------------------------------------------------------
   #-- Naming
-  network_admin_policy_key = "${var.policy_name_prefix}-network-admin-policy"
+  network_admin_policy_key = "${var.cislz_tag_lookup_value}-network-admin-policy"
   default_network_admin_policy_name = "network-admin-policy"
-  network_admin_policy_name = var.network_admin_policy_name != null ? var.network_admin_policy_name : "${var.policy_name_prefix}-${local.default_network_admin_policy_name}"
+  network_admin_policy_name = var.network_admin_policy_name != null ? var.network_admin_policy_name : "${var.cislz_tag_lookup_value}-${local.default_network_admin_policy_name}"
 
   #network_admin_grants_on_root_cmp = contains(keys(local.group_tag_map),local.network_admin_tag) ? [
   #  "allow group ${local.group_tag_map[local.network_admin_tag]} to use cloud-shell in tenancy",
@@ -169,9 +169,9 @@ locals {
   #-- Database admin policy
   #--------------------------------------------------------------------------------------------
   #-- Naming
-  database_admin_policy_key = "${var.policy_name_prefix}-database-admin-policy"
+  database_admin_policy_key = "${var.cislz_tag_lookup_value}-database-admin-policy"
   default_database_admin_policy_name = "database-admin-policy"
-  database_admin_policy_name = var.database_admin_policy_name != null ? var.database_admin_policy_name : "${var.policy_name_prefix}-${local.default_database_admin_policy_name}"
+  database_admin_policy_name = var.database_admin_policy_name != null ? var.database_admin_policy_name : "${var.cislz_tag_lookup_value}-${local.default_database_admin_policy_name}"
 
   #-- Database admin grants on Root compartment
   #database_admin_grants_on_root_cmp = contains(keys(local.group_tag_map),local.database_admin_tag) ? [
@@ -252,9 +252,9 @@ locals {
   #-- Application admin policy
   #--------------------------------------------------------------------------------------------
   #-- Naming
-  appdev_admin_policy_key = "${var.policy_name_prefix}-appdev-admin-policy"
+  appdev_admin_policy_key = "${var.cislz_tag_lookup_value}-appdev-admin-policy"
   default_appdev_admin_policy_name = "appdev-admin-policy"
-  appdev_admin_policy_name = var.appdev_admin_policy_name != null ? var.appdev_admin_policy_name : "${var.policy_name_prefix}-${local.default_appdev_admin_policy_name}"
+  appdev_admin_policy_name = var.appdev_admin_policy_name != null ? var.appdev_admin_policy_name : "${var.cislz_tag_lookup_value}-${local.default_appdev_admin_policy_name}"
 
   #-- Application admin grants on Root compartment
   #appdev_admin_grants_on_root_cmp = contains(keys(local.group_tag_map),local.appdev_admin_tag) ? [
@@ -340,9 +340,9 @@ locals {
   #-- Exadata Cloud Service infrastructure admin policy
   #--------------------------------------------------------------------------------------------
   #-- Naming
-  exainfra_admin_policy_key = "${var.policy_name_prefix}-exainfra-admin-policy"
+  exainfra_admin_policy_key = "${var.cislz_tag_lookup_value}-exainfra-admin-policy"
   default_exainfra_admin_policy_name = "exainfra-admin-policy"
-  exainfra_admin_policy_name = var.exainfra_admin_policy_name != null ? var.exainfra_admin_policy_name : "${var.policy_name_prefix}-${local.default_exainfra_admin_policy_name}"
+  exainfra_admin_policy_name = var.exainfra_admin_policy_name != null ? var.exainfra_admin_policy_name : "${var.cislz_tag_lookup_value}-${local.default_exainfra_admin_policy_name}"
 
   #-- Exainfra admin grants on Root compartment
   #exainfra_admin_grants_on_root_cmp = contains(keys(local.group_tag_map),local.exainfra_admin_tag) ? [
@@ -393,9 +393,9 @@ locals {
   #-- Storage admin policy
   #--------------------------------------------------------------------------------------------
   #-- Naming
-  storage_admin_policy_key = "${var.policy_name_prefix}-storage-admin-policy"
+  storage_admin_policy_key = "${var.cislz_tag_lookup_value}-storage-admin-policy"
   default_storage_admin_policy_name = "storage-admin-policy"
-  storage_admin_policy_name = var.storage_admin_policy_name != null ? var.storage_admin_policy_name : "${var.policy_name_prefix}-${local.default_storage_admin_policy_name}"
+  storage_admin_policy_name = var.storage_admin_policy_name != null ? var.storage_admin_policy_name : "${var.cislz_tag_lookup_value}-${local.default_storage_admin_policy_name}"
 
   #-- Storage admin grants on Root compartment
   #storage_admin_grants_on_root_cmp = contains(keys(local.group_tag_map),local.storage_admin_tag) ? [
@@ -478,9 +478,9 @@ locals {
   #-- Compute Agent policy
   #--------------------------------------------------------------------------------------------
   #-- Naming
-  compute_agent_policy_key = "${var.policy_name_prefix}-compute-agent-policy"
+  compute_agent_policy_key = "${var.cislz_tag_lookup_value}-compute-agent-policy"
   default_compute_agent_policy_name = "compute-agent-policy"
-  compute_agent_policy_name = var.compute_agent_policy_name != null ? var.compute_agent_policy_name : "${var.policy_name_prefix}-${local.default_compute_agent_policy_name}"
+  compute_agent_policy_name = var.compute_agent_policy_name != null ? var.compute_agent_policy_name : "${var.cislz_tag_lookup_value}-${local.default_compute_agent_policy_name}"
 
   #-- Compute Agent grants
   compute_agent_grants = contains(keys(local.dyn_group_tag_map),local.dyn_compute_agent_tag) && contains(keys(local.cmp_tag_map),local.application_cmp_tag) ? [
@@ -505,9 +505,9 @@ locals {
   #-- Database KMS policy
   #--------------------------------------------------------------------------------------------
   #-- Naming
-  database_kms_policy_key = "${var.policy_name_prefix}-database-kms-policy"
+  database_kms_policy_key = "${var.cislz_tag_lookup_value}-database-kms-policy"
   default_database_kms_policy_name = "database-kms-policy"
-  database_kms_policy_name = var.database_kms_policy_name != null ? var.database_kms_policy_name : "${var.policy_name_prefix}-${local.default_database_kms_policy_name}"
+  database_kms_policy_name = var.database_kms_policy_name != null ? var.database_kms_policy_name : "${var.cislz_tag_lookup_value}-${local.default_database_kms_policy_name}"
   
   #-- The grants
   database_kms_grants = contains(keys(local.dyn_group_tag_map),local.dyn_database_kms_tag) && contains(keys(local.cmp_tag_map),local.security_cmp_tag) ? [
@@ -545,3 +545,4 @@ resource "oci_identity_policy" "these" {
     defined_tags   = each.value.defined_tags
     freeform_tags  = each.value.freeform_tags
 }
+ */

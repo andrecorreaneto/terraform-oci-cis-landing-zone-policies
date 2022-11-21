@@ -2,35 +2,47 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 module "cislz_policies" {
-  source       = "../.."
-  tenancy_id   = var.tenancy_id
-  policy_name_prefix = "cislandingzone"
+  source     = "../.."
+  tenancy_id = var.tenancy_id
+
+  #policy_name_prefix     = "vision" # Uncomment to add the prefix to all pre-configured policy names.
+  cislz_tag_lookup_value = "vision" # tells the module to lookup compartments with freeform tag cislz : "vision"
   
-  compartments = [
-    {"name":"cislandingzone-top-cmp",         "freeform_tags":{"cmp-type":"enclosing"}},
-    {"name":"cislandingzone-security-cmp",    "freeform_tags":{"cmp-type":"security"}},
-    {"name":"cislandingzone-network-cmp",     "freeform_tags":{"cmp-type":"network"}},
-    {"name":"cislandingzone-application-cmp", "freeform_tags":{"cmp-type":"application"}},
-    {"name":"cislandingzone-database-cmp",    "freeform_tags":{"cmp-type":"database"}},
-    {"name":"cislandingzone-exainfra-cmp",    "freeform_tags":{"cmp-type":"exainfra"}}
+  enable_tenancy_level_template_policies = true
+  groups_with_tenancy_level_roles = [
+    {"name":"vision-iam-admin-group",     "roles":"iam"},
+    {"name":"vision-cred-admin-group",    "roles":"cred"},
+    {"name":"vision-cost-admin-group",    "roles":"cost"},
+    {"name":"vision-security-admin-group","roles":"security"},
+    {"name":"vision-app-admin-group",     "roles":"application"},
+    {"name":"vision-auditor-group",       "roles":"auditor"},
+    {"name":"vision-announcement_reader-group","roles":"announcement-reader"},
+    {"name":"vision-database-admin-group","roles":"basic"},
+    {"name":"vision-exainfra-admin-group","roles":"basic"},
+    {"name":"vision-storage-admin-group", "roles":"basic"}
   ]
 
-  groups = [
-    {"name":"cislandingzone-iam-admin-group",     "freeform_tags":{"roles":"iam-admin"}},
-    {"name":"cislandingzone-cred-admin-group",    "freeform_tags":{"roles":"cred-admin"}},
-    {"name":"cislandingzone-cost-admin-group",    "freeform_tags":{"roles":"cost-admin"}},
-    {"name":"cislandingzone-network-admin-group", "freeform_tags":{"roles":"network-admin"}},
-    {"name":"cislandingzone-security-admin-group","freeform_tags":{"roles":"security-admin"}},
-    {"name":"cislandingzone-app-admin-group",     "freeform_tags":{"roles":"application-admin"}},
-    {"name":"cislandingzone-database-admin-group","freeform_tags":{"roles":"database-admin"}},
-    {"name":"cislandingzone-exainfra-admin-group","freeform_tags":{"roles":"exainfra-admin"}},
-    {"name":"cislandingzone-storage-admin-group", "freeform_tags":{"roles":"storage-admin"}},
-    {"name":"cislandingzone-auditor-group",       "freeform_tags":{"roles":"auditor"}},
-    {"name":"cislandingzone-announcement_reader-group","freeform_tags":{"roles":"announcement_reader"}}
-  ]
+  custom_policies = {
+    "CUSTOM-POLICY" : {
+      name : "custom-policy"
+      description : "Custom policy"
+      compartment_id : var.tenancy_id
+      #-- The "not ok" statements below are flagged by the module if variable enable_cis_benchmark_checks = true (default)
+      statements : [
+        #"allow group-a to manage all-resources in tenancy", # not ok
+        #"allow group-b to manage all-resources in tenancy ", # not ok
+        "allow group group-a to use groups in tenancy where target.group.name != 'Administrators'", # ok
+        "allow group group-a to use groups in tenancy where target.group.name = 'group-a'", # ok
+        "allow group vision-cred-admin-group to manage users in tenancy where any {target.group.name != 'Administrators'}", # ok
+        #"allow group vision-cred-admin-group to manage users in tenancy where any {target.group.name != 'Administrators', request.operation = 'UpdateGroup'}", # not ok
+        "allow group vision-cred-admin-group to manage users in tenancy where any {target.group.name != 'Administrators', request.operation = 'ListAPiKeys'}" # ok
+        #"allow group vision-cred-admin-group to manage groups in tenancy", # not ok
+        #"allow group vision-cred-admin-group to manage users in tenancy" # not ok
+      ]            
+      defined_tags : null
+      freeform_tags : null
+    }
+  }
 
-  dynamic_groups = [
-    {"name":"cislandingzone-appdev-computeagent-dynamic-group", "freeform_tags":{"roles":"dyn-compute-agent"}},
-    {"name":"cislandingzone-database-kms-dynamic-group","freeform_tags":{"roles":"dyn-database-kms"}}
-  ]  
-}
+  #enable_cis_benchmark_checks = false # uncomment to disable CIS Benchmark policy checks.
+}  

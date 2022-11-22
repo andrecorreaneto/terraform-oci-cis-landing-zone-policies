@@ -64,8 +64,8 @@ The *cislz-consumer-groups-\<suffix\>* tags supports a comma-separated string of
 
 Picture the use case where a compartment provide network and security related resource types to multiple user populations, like distinct database administration groups for distinct environments (dev and prod). In this scenario, the compartment would be tagged like:
 ```
-*cislz-cmp-type: network, security*
-*cislz-consumer-groups-database: dev-database-admin, prod-database-admin*
+cislz-cmp-type: network, security
+cislz-consumer-groups-database: dev-database-admin, prod-database-admin
 ```
 
 The actual applied policies are the combined result of *cislz-cmp-type* and *cislz-consumer-groups-\<suffix\>* values. In OCI terms, *cislz-cmp-type* defines the possible resource types supported in the compartment, while *cislz-consumer-groups-\<suffix\>* defines the grantees and their access levels (*manage,use,read,inspect*) on a subset of those resource types (as denoted by *\<suffix\>*).

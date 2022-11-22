@@ -23,7 +23,7 @@ locals {
   group_role_to_name_map = {for key, value in local.group_name_map_transpose : key => value[0]} # this is the same transposed matrix, but it takes group name string at index 0.
 
   #-- Used to check if an enclosing compartment is available.
-  cmp_type_list = flatten([for k, v in local.cmp_name_to_cislz_tag_map : split(",",v.cmp-type)])
+  cmp_type_list = flatten([for cmp, values in local.cmp_name_to_cislz_tag_map : split(",",values.cmp-type)])
 
   #-- Basic grants
   basic_grants_on_root_cmp = length(local.group_names) > 0 ? [

@@ -37,11 +37,11 @@ The following **freeform tags** are supported for attaching **to compartments**:
 - cislz-consumer-groups-dyn-database-kms
 - cislz-consumer-groups-dyn-compute-agent
 
-#### cislz
+#### cislz Tag
 
 Defines the specific Landing Zone deployment that the compartment belongs to. The assigned value is matched against the lookup value passed in *cislz_tag_lookup_value* input variable. No policies are created if *cislz* tag and *cislz_tag_lookup_value* do not match.
 
-#### cislz-cmp-type
+#### cislz-cmp-type Tag
 
 Defines the compartment's intent, or the OCI resource types it is intended to hold. For instance, a compartment can be created with the objective of holding network resources, or security resources, or both. 
 
@@ -58,8 +58,9 @@ Policies are always attached to the compartment itself.
 
 The same compartment can be assigned one to multiple types, as a comma separated list. No policies are created if there is no tag assignment or an invalid value is provided.
 
+#### cislz-consumer-groups-\<suffix\> Tags
 
-The *cislz-consumer-groups-\<suffix\>* tags define the groups that use (or consume) *\<suffix\>* related resources from the compartment, denoting a perspective which the groups consume those resources. For instance, a tag *cislz-consumer-groups-database: database-admin-group* indicates *database-admin-group* consumes resources in the compartment from a database admin perspective. This results in policy statements granting specific database admin permissions to the group in the compartment.
+The *cislz-consumer-groups-\<suffix\>* tags define the groups that use (or consume) resources from the compartment, denoting a perspective which the groups consume those resources. For instance, a tag *cislz-consumer-groups-database: database-admin-group* indicates *database-admin-group* consumes resources in the compartment from a *database* admin perspective. This results in policy statements granting specific *database* admin permissions to the group in the compartment.
 
 The *cislz-consumer-groups-\<suffix\>* tags supports a comma-separated string of values, which allows for indicating multiple groups consuming from a single compartment. This is important in scenarios where a compartment provides shared services to multiple users. 
 
@@ -71,42 +72,42 @@ Picture the use case where a compartment provide network and security related re
 
 The actual applied policies are the combined result of *cislz-cmp-type* and *cislz-consumer-groups-\<suffix\>* values. In OCI terms, *cislz-cmp-type* defines the possible resource types supported in the compartment, while *cislz-consumer-groups-\<suffix\>* defines the grantees and their access levels (*manage,use,read,inspect*) on a subset of those resource types (as denoted by *\<suffix\>*).
 
-#### cislz-consumer-groups-read
+##### cislz-consumer-groups-read
 
 Defines the groups that can only read from the compartment. 
-#### cislz-consumer-groups-iam
+##### cislz-consumer-groups-iam
 
 Defines the groups that consume compartment resources from an *IAM* admin perspective. 
 
-#### cislz-consumer-groups-security
+##### cislz-consumer-groups-security
 
 Defines the groups that consume compartment resources from a *security* admin perspective. 
 
-#### cislz-consumer-groups-network
+##### cislz-consumer-groups-network
 
 Defines the groups that consume compartment resources from a *network* admin perspective.
 
-#### cislz-consumer-groups-application
+##### cislz-consumer-groups-application
 
 Defines the groups that consume compartment resources from an *application* admin perspective.
 
-#### cislz-consumer-groups-database
+##### cislz-consumer-groups-database
 
 Defines the groups that consume compartment resources from a *database* admin perspective.
 
-#### cislz-consumer-groups-exainfra
+##### cislz-consumer-groups-exainfra
 
 Defines the groups that consume compartment resources from an *Exadata Cloud Service infrastructure* admin perspective.
 
-#### cislz-consumer-groups-storage
+##### cislz-consumer-groups-storage
 
 Defines the groups that consume compartment resources from a *storage* admin perspective.
 
-#### cislz-consumer-groups-dyn-database-kms
+##### cislz-consumer-groups-dyn-database-kms
 
 Defines the dynamic groups that consume key management services (KMS) from the perspective of a database system. This typically applies to compartments tagged with *cislz-cmp-type:security*, as security compartments are an adequate container for KMS.
 
-#### cislz-consumer-groups-dyn-compute-agent
+##### cislz-consumer-groups-dyn-compute-agent
 
 Defines the dynamic groups allowed to execute Compute agent plugin in the compartment.
 

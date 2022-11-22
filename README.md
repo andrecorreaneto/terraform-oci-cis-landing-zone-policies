@@ -2,7 +2,7 @@
 
 ![Landing Zone logo](./images/landing_zone_300.png)
 
- This module manages OCI (Oracle Cloud Infrastructure) IAM (Identity and Access Management) policies, providing an RBAC (Role Based Access Control) framework that implements SoD (Separation of Duties) through template policies. Within this implementation, the Least Privilege security principle is enforced, as required by CIS (Center for Internet Security) OCI Foundations Benchmark.
+ This module manages OCI (Oracle Cloud Infrastructure) IAM (Identity and Access Management) policies, providing an RBAC (Role Based Access Control) framework that implements SoD (Separation of Duties) through template policies. Within this implementation, the Least Privilege security principle is enforced, as recommended by CIS (Center for Internet Security) OCI Foundations Benchmark.
 
  Check [module specification](./SPEC.md) for a full description of module requirements, supported variables, managed resources and outputs.
 
@@ -54,9 +54,7 @@ Currently supported values:
 - **exainfra**: compartment´s intent to hold *Exatada Cloud Service infrastructure* related resources, hence this value drives the creation of *Exatada Cloud Service infrastructure* policies.
 - **enclosing**: drives the creation of policies that are scoped to more than one compartment, as a compartment tagged as *enclosing* is intended to be the parent of above compartment types.
 
-Policies are always attached to the compartment itself.
-
-The same compartment can be assigned one to multiple types, as a comma separated list. No policies are created if there is no tag assignment or an invalid value is provided.
+Multiple values can be assigned to *cislz-cmp-type*, as a comma separated list. No policies are created if there is no tag assignment or an invalid value is provided.
 
 #### cislz-consumer-groups-\<suffix\> Tags
 
@@ -121,6 +119,10 @@ Defines the dynamic groups allowed to execute Compute agent plugin in the compar
 *database* | *database* | *manage* permissions are granted over *database* related resources to groups names assigned to *cislz-consumer-groups-database*.
 *exainfra* | *exainfra* | *manage* permissions are granted over *Exadata Cloud Service infrastructure* related resources to groups names assigned to *cislz-consumer-groups-exainfra*.
 
+#### Policy Atachment
+
+The compartment scope in policy statements defines the compartment to which the policy is attached. For instance, statements ending with *in compartment security* are always attached to the *security* compartment; statements ending with *in compartment network* are always attached to the *network* compartment, and so on.
+
 #### A Concrete Example
 
 As an example, let's assume the following tags are assigned to the *vision-network-cmp* compartment:
@@ -136,7 +138,7 @@ As an example, let's assume the following tags are assigned to the *vision-netwo
 - *cislz-consumer-groups-storage: vision-storage-admin-group*: the value communicates the group name that consumes compartment resources from a *storage* admin perspective.
 - *cislz-consumer-groups-exainfra: vision-exainfra-admin-group*: the value communicates the group name that consumes compartment resources from an *exainfra* (Exadata Cloud Service infrastructure) admin perspective.
 
-Per applied tags the module attaches the following policy to this compartment:
+Per applied tags the module attaches the following policy to *vision-network-cmp* compartment:
 
 ```
 allow group vision-network-admin-group to read all-resources in compartment vision-network-cmp
@@ -199,6 +201,10 @@ Supported tenancy level roles:
 - **basic**: grants simple basic permissions at the tenancy level, specifically the ability to use cloud-shell and read usage-budgets.
 
 As OCI supports 50 statements per policy, tenancy level grants are split into two policies: one for all groups with manage/use permissions over at least one resource and one for groups with only read/inspect + basic role permissions.
+
+#### Policy Atachment
+
+Tenancy level policies are always attached at the root compartment.
 
 #### A Concrete Example
 
@@ -278,7 +284,7 @@ allow group vision-announcement_reader-group to read announcements in tenancy
 
 In this mode, policies are provided as an input parameter and can supplement or completely override the template policies.
 
-For completely overriding the template policies, set variables *enable_compartment_level_template_policies* and *enable_tenancy_level_template_policies* to false."
+For completely overriding the template policies, set variables *enable_compartment_level_template_policies* and *enable_tenancy_level_template_policies* to false.
 
 Supplied policies are defined using the *custom_policies* map variable.
 

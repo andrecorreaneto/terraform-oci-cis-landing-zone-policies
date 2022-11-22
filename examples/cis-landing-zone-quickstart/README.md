@@ -8,7 +8,7 @@ It showcases the two supported usage modes of the [policy module](../..): templa
 
 In template policies mode, both compartment level and tenancy level policies are enabled.
 
-- Compartment level policies are managed based on freeform tags applied to compartments. It looks up compartments carrying the freeform tag *cislz = "vision"* (per *cislz_tag_lookup_value* value) and then inspects freeform tags *cislz-cmp-type* and *cislz-consumer-groups* for pulling up template policies. This example matches compartments example https://github.com/andrecorreaneto/terraform-oci-secure-landing-zone-compartments/tree/main/examples/cis-landing-zone-quickstart.
+- Compartment level policies are managed based on freeform tags applied to compartments. It selects compartments where *cislz* freeform tag matches *cislz_tag_lookup_value* input variable. Then it applies template policies based on *cislz-cmp-type* and *cislz-consumer-groups-\<suffix\>* freeform tags. This example matches compartments example https://github.com/andrecorreaneto/terraform-oci-secure-landing-zone-compartments/tree/main/examples/cis-landing-zone-quickstart.
 
 - Tenancy level policies are managed based on *enable_tenancy_level_template_policies* and *groups_with_tenancy_level_roles* variables passed to the module.
 

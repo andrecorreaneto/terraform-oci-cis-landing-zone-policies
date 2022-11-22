@@ -129,12 +129,12 @@ As an example, let's assume the following tags are assigned to the *vision-netwo
 
 - *cislz: vision*: the value is matched against provided *cislz_tag_lookup_value* input variable for retrieving the compartment.
 - *cislz-cmp-type: network*: the value communicates this compartment is about *network* resource types, hence network policy statements should be pulled from the template.
-- *cislz-consumer-groups-network: vision-network-admin-group*: the value communicates the group name that effectively manages *network* resource types. 
-- *cislz-consumer-groups-security: vision-security-admin-group*: the value communicates the group name that uses *network* resource types from a *security* admin perspective.  
-- *cislz-consumer-groups-application: vision-app-admin-group*: the value communicates the group name that uses *network* resource types from an *application* admin perspective.  
-- *cislz-consumer-groups-database: vision-database-admin-group*: the value communicates the group name that uses *network* resource types from a *database* admin perspective.
-- *cislz-consumer-groups-storage: vision-storage-admin-group*: the value communicates the group name that uses *network* resource types from a *storage* admin perspective.
-- *cislz-consumer-groups-exainfra: vision-exainfra-admin-group*: the value communicates the group name that uses *network* resource types from an *exainfra* (Exadata Cloud Service infrastructure) admin perspective.
+- *cislz-consumer-groups-network: vision-network-admin-group*: the value communicates the group name that effectively manages compartment resources, because the tag name *\<suffix\>* matches *cislz-cmp-type* value, per table above.
+- *cislz-consumer-groups-security: vision-security-admin-group*: the value communicates the group name that consumes compartment resources from a *security* admin perspective.  
+- *cislz-consumer-groups-application: vision-app-admin-group*: the value communicates the group name that consumes compartment resources
+- *cislz-consumer-groups-database: vision-database-admin-group*: the value communicates the group name that consumes compartment resources from a *database* admin perspective.
+- *cislz-consumer-groups-storage: vision-storage-admin-group*: the value communicates the group name that consumes compartment resources from a *storage* admin perspective.
+- *cislz-consumer-groups-exainfra: vision-exainfra-admin-group*: the value communicates the group name that consumes compartment resources from an *exainfra* (Exadata Cloud Service infrastructure) admin perspective.
 
 Per applied tags the module attaches the following policy to this compartment:
 

@@ -14,7 +14,7 @@
 
  ## 1) Template Policies
 
- In this mode policies are pre-configured, providing SoD across a set of pre-defined group roles. 
+ In this mode policies are pre-configured, providing an RBAC implementation across a set of pre-defined group roles. 
  
  Policies scoped at the compartment level are based on freeform tags applied to the compartments. These tags define a specific Landing Zone deployment, the compartment type and consumer groups. The module takes an input variable that is used to lookup the tagged compartments.
  
@@ -22,71 +22,100 @@
 
  ### 1.1) Compartment Level Policies
 
-The following **freeform tags** are required **on the compartments**:
+The following **freeform tags** are supported for attaching **to compartments**: 
+
+- cislz
+- cislz-cmp-type
+- cislz-consumer-groups-read
+- cislz-consumer-groups-iam
+- cislz-consumer-groups-security
+- cislz-consumer-groups-network
+- cislz-consumer-groups-application
+- cislz-consumer-groups-database
+- cislz-consumer-groups-exainfra
+- cislz-consumer-groups-storage
+- cislz-consumer-groups-dyn-database-kms
+- cislz-consumer-groups-dyn-compute-agent
+
+The *cislz-consumer-groups-\<suffix\>* tags define the groups that use (or consume) *\<suffix\>* related resources from the compartment, denoting a perspective which the group consumes those resources. For instance, a tag *cislz-consumer-groups-database :database-admin-group* indicates *database-admin-group* consumes resources in the compartment from a database admin perspective. This results in policy statements granting specific database admin permissions to the group in the compartment.
+
+The *cislz-consumer-groups-\<suffix\>* tags supports a comma-separated string of values, which allows for indicating multiple groups consuming from a single compartment. This is important in scenarios where a compartment provides shared services to multiple users. 
+
+Picture the use case where a compartment provide network and security related resource types to multiple user populations, like distinct database administration groups for distincy environments. In this scenario, the compartment would be tagged like:
+- *cislz-cmp-type: network, security*
+- *cislz-consumer-groups-database: dev-database-admin, prod-database-admin*
+
+The actual applied policies are the combined result of *cislz-cmp-type* and *cislz-consumer-groups-\<suffix\>* values. In OCI terms, *cislz-cmp-type* defines the possible resource types supported in the compartment, while *cislz-consumer-groups-\<suffix\>* defines the grantees and their access levels (*manage,use,read,inspect*) on a subset of those resource types (as denoted by *\<suffix\>*).
 
 #### cislz
 
-Defines the specific Landing Zone deployment that the compartment belongs to. The assigned value must match the lookup value passed in the module *cislz_tag_lookup_value* input variable.
+Defines the specific Landing Zone deployment that the compartment belongs to. The assigned value is matched against the lookup value passed in *cislz_tag_lookup_value* input variable.
 
 #### cislz-cmp-type
 
-Defines the compartment's intent, or the resource types it is intended to be assigned. For instance, is it suuposed to be a compartment for network resources, for security resources, for both? 
+Defines the compartment's intent, or the OCI resource types it is intended to hold. For instance, a compartment can be created with the intention to hold network resources, or security resources, or both. 
 
 Currently supported values:
 
-- **security**: drives the creation of security related policies.
-- **network**: drives the creation of network related policies.
-- **application**: drives the creation of application related policies.
-- **database**: drives the creation of database related policies.
-- **exainfra**: drives the creation of Exatada Cloud Service related policies.
-- **enclosing**: drives the creation of policies that are scoped to more than one compartment, as a compartment tagged as *enclosing* is intended to be the parent of the other compartment types.
+- **security**: compartment´s intent to hold security related resources, hence this value drives the creation of security related policies.
+- **network**: compartment´s intent to hold network related resources, hence this value drives the creation of network related policies.
+- **application**: compartment´s intent to hold application related resources, hence this value drives the creation of application related policies.
+- **database**: compartment´s intent to hold database related resources, hence this value drives the creation of database related policies.
+- **exainfra**: compartment´s intent to hold Exatada Cloud Service related resources, hence this value drives the creation of Exatada Cloud Service related policies.
+- **enclosing**: drives the creation of policies that are scoped to more than one compartment, as a compartment tagged as *enclosing* is intended to be the parent of above compartment types.
 
 Policies are always attached to the compartment itself.
 
 The same compartment can be assigned one to multiple types, as a comma separated list. No policies are created if there is no tag assignment or an invalid value is provided.
 
-Assignment examples: 
+#### cislz-consumer-groups-read
 
-- cislz-cmp-type: security,network
-- cislz-cmp-type: application,database,exainfra
-- cislz-cmp-type: application
-- cislz-cmp-type: enclosing
+Defines the groups that can only read from the compartment. 
+#### cislz-consumer-groups-iam
 
-#### cislz-consumer-groups
+Defines the groups that consume compartment resources from an IAM admin perspective. 
 
-Defines the groups that use (or consume) resources from the compartment. Since different groups have different roles (or consuming interests), the tag value has to communicate the role of each consuming group. Hence, each consuming group is specified as *\<group-role\>:\<group-name\>*
+#### cislz-consumer-groups-security
 
-Currently supported values for *\<group-role\>*:
+Defines the groups that consume compartment resources from a security admin perspective. 
 
-- **iam**: denotes an interest in IAM related resources.
-- **security**: denotes an interest in security related resources.
-- **network**: denotes an interest in network related resources.
-- **application**: denotes an interest in application related resources.
-- **database**:  denotes an interest in database related resources.
-- **exainfra**: denotes an interest in Exadata Cloud Service related resources.
-- **storage**: denotes an interest in storage related resources.
-- **read**: denotes an interest in only reading resources in the compartment.
-- **database-kms-dyn**: denotes an interest in key management resources to be consumed by a dynamic group of database instances.
-- **compute-agent-dyn**: denotes an interest in resources to be consumed by a dynamic group of compute agents.
+#### cislz-consumer-groups-network
 
-*\<group-name\>* can be any local or federated group name.
+Defines the groups that consume compartment resources from a network admin perspective.
 
-The same compartment can be assigned multiple consumer groups, as a comma-separated list. No policies are created if there is no tag assignment or an invalid value is provided.
+#### cislz-consumer-groups-application
 
-Assignment examples: 
+Defines the groups that consume compartment resources from an application admin perspective.
 
-- cislz-consumer-groups: security:cislz-security-admin-group,network:cislz-network-admin-group,application:cislz-application-admin-group,database:cislz-database-admin-group,storage:cislz-storage-admin-group,read:cislz-readonly-group
-- cislz-consumer-groups: iam:cislz-iam-admin-group,security:cislz-security-admin-group
+#### cislz-consumer-groups-database
 
-**Important**: There is an implied relationship between *cislz-cmp-type* and the *\<group-role\>* in *cislz-consumer-groups* as far as *manage* permissions are concerned, according to table below:
+Defines the groups that consume compartment resources from a database admin perspective.
 
-**cislz-cmp-type** | **cislz-consumer-groups' \<group-role\>** | **Policy Outcome**
+#### cislz-consumer-groups-exainfra
+
+Defines the groups that consume compartment resources from an Exadata Cloud Service infrastructure admin perspective.
+
+#### cislz-consumer-groups-storage
+
+Defines the groups that consume compartment resources from a storage admin perspective.
+
+#### cislz-consumer-groups-dyn-database-kms
+
+Defines the dynamic groups that consume key management services (KMS) from the perspective of a database system. This typically applies to compartments tagged with *cislz-cmp-type:security*, as security compartments are an adequate container for KMS.
+
+#### cislz-consumer-groups-dyn-compute-agent
+
+Defines the dynamic groups allowed to execute Compute agent plugin in the compartment.
+
+**Important**: There is an implied relationship between *cislz-cmp-type* and *\<suffix\>* in *cislz-consumer-groups-\<suffix\>* as far as *manage* permissions are concerned, according to table below:
+
+**cislz-cmp-type** | **cislz-consumer-groups' \<suffix\>** | **Policy Outcome**
 --------------|-------------|----------
-*security* | *security* | *manage* permissions are granted over **security** related resources to *\<group-name\>* with *security* *\<group-role\>*.
-*network* | *network* | *manage* permissions are granted over **network** related resources to *\<group-name\>* with *network* *\<group-role\>*.
-*application* | *application* | *manage* permissions are granted over **application** related resources to *\<group-name\>* with *application* *\<group-role\>*.
-*database* | *database* | *manage* permissions are granted over **database** related resources to *\<group-name\>* with *database* *\<group-role\>*.
-*exainfra* | *exainfra* | *manage* permissions are granted over **Exadata Cloud Service** related resources to *\<group-name\>* with *exainfra* *\<group-role\>*.
+*security* | *security* | *manage* permissions are granted over *security* related resources to groups names assigned to *cislz-consumer-groups-security*.
+*network* | *network* | *manage* permissions are granted over *network* related resources to groups names assigned to *cislz-consumer-groups-network*.
+*application* | *application* | *manage* permissions are granted over *application* related resources to groups names assigned to *cislz-consumer-groups-application*.
+*database* | *database* | *manage* permissions are granted over *database* related resources to groups names assigned to *cislz-consumer-groups-database*.
+*exainfra* | *exainfra* | *manage* permissions are granted over *Exadata Cloud Service* related resources to groups names assigned to *cislz-consumer-groups-exainfra*.
 
 #### A Concrete Example
 
@@ -94,9 +123,14 @@ As an example, let's assume the following tags are assigned to the *vision-netwo
 
 ![Tagged Compartment](images/tagged-compartment.PNG)
 
-- **cislz**: *vision* is the value the module tries to match with provided *cislz_tag_lookup_value* input variable for retrieving the compartment.
-- **cislz-cmp-type**: *network* tells the module this compartment is about network resources, hence network policies should be pulled from the pre-configured template.
-- **cislz-consumer-groups**: *security:vision-security-admin-group,application:vision-app-admin-group,database:vision-database-admin-group,network:vision-network-admin-group,storage:vision-storage-admin-group,exainfra:vision-exainfra-admin-group* communicates all consumer groups for the compartment resources. Since **cislz-cmp-type** is *network* and we have a group interested in *network* resources, the *vision-network-admin-group* group is granted management permissions on the network resources in the compartment. The other groups are granted permissions that are specific to their roles.
+- *cislz: vision*: the value is matched against provided *cislz_tag_lookup_value* input variable for retrieving the compartment.
+- *cislz-cmp-type: network*: the value communicates this compartment is about *network* resource types, hence network policy statements should be pulled from the template.
+- *cislz-consumer-groups-network: vision-network-admin-group*: the value communicates the group name that effectively manages *network* resource types. 
+- *cislz-consumer-groups-security: vision-security-admin-group*: the value communicates the group name that uses *network* resource types from a *security* admin perspective.  
+- *cislz-consumer-groups-application: vision-app-admin-group*: the value communicates the group name that uses *network* resource types from an *application* admin perspective.  
+- *cislz-consumer-groups-database: vision-database-admin-group*: the value communicates the group name that uses *network* resource types from a *database* admin perspective.
+- *cislz-consumer-groups-storage: vision-storage-admin-group*: the value communicates the group name that uses *network* resource types from a *storage* admin perspective.
+- *cislz-consumer-groups-exainfra: vision-exainfra-admin-group*: the value communicates the group name that uses *network* resource types from an *exainfra* (Exadata Cloud Service infrastructure) admin perspective.
 
 Per applied tags the module attaches the following policy to this compartment:
 

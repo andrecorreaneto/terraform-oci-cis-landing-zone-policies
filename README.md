@@ -1,10 +1,10 @@
 # CIS OCI Landing Zone IAM Policy Module
 
+![Landing Zone logo](./images/landing_zone_300.png)
+
  This module manages OCI (Oracle Cloud Infrastructure) IAM (Identity and Access Management) policies, providing an RBAC (Role Based Access Control) framework that implements SoD (Separation of Duties) through template policies. Within this implementation, the Least Privilege security principle is enforced, as required by CIS (Center for Internet Security) OCI Foundations Benchmark.
 
  Check [module specification](./SPEC.md) for a full description of module requirements, supported variables, managed resources and outputs.
-
-![Landing Zone logo](./images/landing_zone_300.png)
 
  The module operates in two non-exclusive modes: 
  - **Template policies**: this is the preferred mode. Policies are either driven off freeform tags applied to compartments (for compartment level policies) or from supplied roles assigned to groups passed to the module (for tenancy level policies).

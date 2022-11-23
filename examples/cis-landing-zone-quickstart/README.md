@@ -1,8 +1,8 @@
-# OCI Policy Module Example - CIS Landing Zone
+# OCI Policy Module Example - CIS Landing Zone Quick Start
 
 ## Introduction
 
-This example shows how to manage IAM (Identity & Access Management) policy resources in Oracle Cloud Infrastructure following CIS OCI Foundations Benchmark recommendations.
+This example shows how to manage IAM (Identity & Access Management) policy resources in Oracle Cloud Infrastructure as in [CIS Landing Zone Quick Start](https://github.com/oracle-quickstart/oci-cis-landingzone-quickstart)
 
 It showcases the two supported usage modes of the [policy module](../..): template policies and supplied policies.
 
@@ -17,7 +17,7 @@ Supplied policies mode is enabled by passing *custom_policies* variable to the m
 Check the [policy module documentation](../../README.md) for details.
 
 ## Using this example
-* Prepare one variable file named `terraform.tfvars` with the required IAM information. The contents of `terraform.tfvars` should look something like the following (or copy and re-use the contents of `terraform.tfvars.template`:
+1. Prepare one variable file named *terraform.tfvars* with the required information for authenticating to OCI. The contents of *terraform.tfvars* should look something like the following (or copy and re-use the contents of *terraform.tfvars.template*):
 
 ```
 ### TENANCY DETAILS
@@ -41,7 +41,7 @@ private_key_password=""
 home_region="<your tenancy home region>"
 ```
 
-Check the provided main.tf file. It calls the underlying tags module for resource management.
+2. Check the provided *main.tf* file. It calls the underlying tags module for resource management.
 
 `main.tf`:
 
@@ -93,7 +93,7 @@ module "cislz_policies" {
 }  
 ```
 
-Then execute the example using the usual Terraform workflow:
+3. Then execute the example using the usual Terraform workflow:
 
 ```
 $ terraform init

@@ -6,6 +6,9 @@
 
  Check [module specification](./SPEC.md) for a full description of module requirements, supported variables, managed resources and outputs.
 
+ Check the [examples](./examples/) folder for module usage. Specifically, see [cis-landing-zone-quickstart](./examples/cis-landing-zone-quickstart/README.md) example for the policies deployed by [CIS OCI Landing Zone Quick Start](https://github.com/oracle-quickstart/oci-cis-landingzone-quickstart).
+
+
  The module operates in two non-exclusive modes: 
  - **Template policies**: this is the preferred mode. Policies are either driven off freeform tags applied to compartments (for compartment level policies) or from supplied roles assigned to groups passed to the module (for tenancy level policies).
  - **Supplied policies**: a map of policies is supplied to the module.

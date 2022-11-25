@@ -17,7 +17,7 @@ locals {
                                                                                   local.database_cmps_policies, local.exainfra_cmps_policies) : {}
 
   #policies = merge(local.template_root_policies, local.template_cmp_policies, var.custom_policies)     
-  policies = local.template_cmp_policies       
+  policies = local.template_root_policies       
 }
 
 resource "oci_identity_policy" "these" {

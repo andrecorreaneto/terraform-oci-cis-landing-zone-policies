@@ -2,7 +2,9 @@
 # Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
 
 locals {  
-  cmp_name_to_cislz_tag_map = {for cmp in var.compartments : cmp.name => {
+  compartments = var.compartments != null ? var.compartments : data.oci_identity_compartments.all.compartments
+
+  cmp_name_to_cislz_tag_map = {for cmp in local.compartments : cmp.name => {
     cmp-type     : lookup(cmp.freeform_tags,"cislz-cmp-type",""),
     iam-group    : length(lookup(cmp.freeform_tags,"cislz-consumer-groups-iam","")) > 0 ? lookup(cmp.freeform_tags,"cislz-consumer-groups-iam","") : null,
     sec-group    : length(lookup(cmp.freeform_tags,"cislz-consumer-groups-security","")) > 0 ? lookup(cmp.freeform_tags,"cislz-consumer-groups-security","") : null,

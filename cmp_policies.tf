@@ -169,7 +169,7 @@ locals {
   #-- Database admin policy
   #--------------------------------------------------------------------------------------------
   #-- Naming
-  database_admin_policy_key = "${var.policy_name_prefix}-database-admin-policy"
+  database_admin_policy_key = "${local.cmp_tag_map[local.database_cmp_tag]}-database-admin-policy" #"${var.policy_name_prefix}-database-admin-policy"
   default_database_admin_policy_name = "database-admin-policy"
   database_admin_policy_name = var.database_admin_policy_name != null ? var.database_admin_policy_name : "${var.policy_name_prefix}-${local.default_database_admin_policy_name}"
 
@@ -393,7 +393,7 @@ locals {
   #-- Storage admin policy
   #--------------------------------------------------------------------------------------------
   #-- Naming
-  storage_admin_policy_key = "${var.policy_name_prefix}-storage-admin-policy"
+  storage_admin_policy_key = "${local.cmp_tag_map[local.application_cmp_tag]}-storage-admin-policy" #"${var.policy_name_prefix}-storage-admin-policy"
   default_storage_admin_policy_name = "storage-admin-policy"
   storage_admin_policy_name = var.storage_admin_policy_name != null ? var.storage_admin_policy_name : "${var.policy_name_prefix}-${local.default_storage_admin_policy_name}"
 

@@ -81,3 +81,11 @@ variable "enable_debug" {
   type = bool
   default = false
 }
+
+variable "compartments" {
+  type = list(object({
+    name = string
+    id = string
+    freeform_tags = map(string)
+  }))
+}

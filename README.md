@@ -27,7 +27,7 @@
  - internal data source: module retrieves all compartments and filter out those that have the *cislz* freeform tag value matching *cislz_tag_lookup_value* input variable.
 **
  
- **Note:** *target_compartments* takes precedence over the data source. If *target_compartments* is no set, the data source is used.
+ **Note:** *target_compartments* takes precedence over the data source. If *target_compartments* is not set, the data source is used.
 
  As a rule of thumb, use *target_compartments* when this module is part of the same Terraform configuration that manages compartments. Use the data source when using the module in stand alone mode.
  

@@ -43,6 +43,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_list_of_compartments_types_tagged_with_cislz_tag_lookup_value"></a> [list\_of\_compartments\_types\_tagged\_with\_cislz\_tag\_lookup\_value](#output\_list\_of\_compartments\_types\_tagged\_with\_cislz\_tag\_lookup\_value) | An internal list with compartments tagged with cislz\_tag\_lookup\_value. Used to find if an enclosing compartment is available. |
-| <a name="output_map_of_compartments_tagged_with_cislz_tag_lookup_value"></a> [map\_of\_compartments\_tagged\_with\_cislz\_tag\_lookup\_value](#output\_map\_of\_compartments\_tagged\_with\_cislz\_tag\_lookup\_value) | An internal map driving the assignment of pre-configured policies according to cislz* tags. |
-| <a name="output_policies"></a> [policies](#output\_policies) | The policies. |
+| <a name="output_list_of_compartments_types_tagged_with_cislz_tag_lookup_value"></a> [list\_of\_compartments\_types\_tagged\_with\_cislz\_tag\_lookup\_value](#output\_list\_of\_compartments\_types\_tagged\_with\_cislz\_tag\_lookup\_value) | An internal list with compartments tagged with cislz\_tag\_lookup\_value. Used to find if an enclosing compartment is available. Enabled if enable\_debug variable is true. |
+| <a name="output_map_of_compartments_tagged_with_cislz_tag_lookup_value"></a> [map\_of\_compartments\_tagged\_with\_cislz\_tag\_lookup\_value](#output\_map\_of\_compartments\_tagged\_with\_cislz\_tag\_lookup\_value) | An internal map driving the assignment of pre-configured policies according to cislz tags. Enabled if enable\_debug variable is true. |
+| <a name="output_policies"></a> [policies](#output\_policies) | The policies. Enabled if enable\_output variable is true. |

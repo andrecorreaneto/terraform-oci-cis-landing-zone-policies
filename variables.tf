@@ -82,7 +82,8 @@ variable "enable_debug" {
   default = false
 }
 
-variable "compartments" {
+variable "target_compartments" {
+  description = "List of compartments that are policy targets."
   type = list(object({
     name = string
     id = string

@@ -18,7 +18,7 @@ locals {
   compute_agent_dyn_group_tag_name = "cislz-consumer-groups-dyn-compute-agent"
 
   #-- Map derived from compartments input variable.
-  cmp_name_to_cislz_tag_map_from_var = {for cmp in var.compartments : cmp.name => {
+  cmp_name_to_cislz_tag_map_from_var = {for cmp in var.target_compartments : cmp.name => {
     cmp-type     : lookup(cmp.freeform_tags, local.cmp_type_tag_name,""),
     iam-group    : length(lookup(cmp.freeform_tags, local.iam_group_tag_name,"")) > 0 ? lookup(cmp.freeform_tags, local.iam_group_tag_name,"") : null,
     sec-group    : length(lookup(cmp.freeform_tags, local.security_group_tag_name,"")) > 0 ? lookup(cmp.freeform_tags, local.security_group_tag_name,"") : null,

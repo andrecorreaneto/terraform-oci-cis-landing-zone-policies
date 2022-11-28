@@ -12,6 +12,41 @@ variable "enable_compartment_level_template_policies" {
   default = true
 }
 
+#-- TLDR;
+#-- When using this module in the same Terraform configuration used to manage compartments, provide compartments via target_compartments variable.
+#-- When used this module in stand alone mode, you don't need to use target_compartments variable. The module will obtain compartments from a data source.
+#--
+#-- The original ideia was having the module reading compartments from a data source only. But that introduces an issue to the processing logic, as
+#-- Terraform requires compartments to be known at plan time, because compartment names are used as map keys by the module. 
+#-- The error is:
+#--
+#-- Error: Invalid for_each argument
+#--│
+#--│   on .terraform\modules\cislz_policies\main.tf line 23, in resource "oci_identity_policy" "these":
+#--│   23:   for_each = {for k, v in local.policies : k => v if length(v.statements) > 0}
+#--│     ├────────────────
+#--││     │ local.policies will be known only after apply
+#--││
+#--││ The "for_each" map includes keys derived from resource attributes that cannot be determined until apply, and so Terraform cannot determine the full set of keys that will identify the instances of     
+#--││ this resource.
+#--││
+#--││ When working with unknown values in for_each, it's better to define the map keys statically in your configuration and place apply-time results only in the map values.
+#--││
+#--││ Alternatively, you could use the -target planning option to first apply only the resources that the for_each value depends on, and then apply a second time to fully converge.
+#--
+#-- This problem only happens when this module is used in the same Terraform configuration (hence single state) as compartments, i.e., the same Terraform configuration
+#-- manages compartments and policies. **Not a problem when used standalone**.
+#-- To workaround this limitation, the module also takes the target compartments as an input. By doing this, Terraform is able to somehow infer the map keys and does not error out.
+variable "target_compartments" {
+  description = "List of compartments that are policy targets."
+  type = list(object({
+    name = string
+    id = string
+    freeform_tags = map(string)
+  }))
+  default = []
+}
+
 variable "cislz_tag_lookup_value" {
   description = "The cislz tag value used for looking up compartments. This module searches for compartments that are freeform tagged with cislz = <cislz_tag_lookup_value>. The selected compartments are eligible for template (pre-configured) policies. If the lookup fails, no template policies are applied."
   type = string

@@ -19,13 +19,22 @@
 
  In this mode policies are pre-configured, providing an RBAC implementation across a set of pre-defined group roles. 
  
- Policies scoped at the compartment level are based on freeform tags applied to the compartments. These tags define a specific Landing Zone deployment, the compartment type and consumer groups. The module takes an input variable that is used to lookup the tagged compartments.
+ Policies scoped at the compartment level are based on freeform tags applied to the compartments. These tags define a specific Landing Zone deployment, the compartment type and consumer groups. 
  
- Policies scoped at the tenancy level are based on groups roles passed to the module as input parameters.
+ The target compartments to which policies are applied can be provided in two ways: 
+ 
+ - *target_compartments* input variable: a list of compartments with name, id and freeform tags attributes set.
+ - internal data source: module retrieves all compartments and filter out those that have the *cislz* freeform tag value matching *cislz_tag_lookup_value* input variable.
+**
+ **Note:** *target_compartments* takes precedence over the data source. If *target_compartments* is no set, the data source is used.
+
+ As a rule of thumb, use *target_compartments* when this module is part of the same Terraform configuration that manages compartments. Use the data source when using the module in stand alone mode.
+ 
+ Policies scoped at the tenancy level are based on groups roles passed to the module via *groups_with_tenancy_level_roles* input variable.
 
  ### 1.1) Compartment Level Policies
 
-The following **freeform tags** are supported for attaching **to compartments**: 
+The following **freeform tags** on **compartments** are supported: 
 
 - cislz
 - cislz-cmp-type
@@ -42,7 +51,7 @@ The following **freeform tags** are supported for attaching **to compartments**:
 
 #### cislz Tag
 
-Defines the specific Landing Zone deployment that the compartment belongs to. The assigned value is matched against the lookup value passed in *cislz_tag_lookup_value* input variable. No policies are created if *cislz* tag and *cislz_tag_lookup_value* do not match.
+Defines the specific Landing Zone deployment that the compartment belongs to. The assigned value is matched against the lookup value passed in *cislz_tag_lookup_value* input variable. No policies are created if *cislz* tag and *cislz_tag_lookup_value* do not match. Ignored if *target_compartments* variable is set.
 
 #### cislz-cmp-type Tag
 

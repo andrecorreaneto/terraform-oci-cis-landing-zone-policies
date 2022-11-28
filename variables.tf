@@ -14,7 +14,7 @@ variable "enable_compartment_level_template_policies" {
 
 #-- TLDR;
 #-- When using this module in the same Terraform configuration used to manage compartments, provide compartments via target_compartments variable.
-#-- When used this module in stand alone mode, you don't need to use target_compartments variable. The module will obtain compartments from a data source.
+#-- When using this module in stand alone mode, you don't need to use target_compartments variable. The module will obtain compartments from a data source.
 #--
 #-- The original ideia was having the module reading compartments from a data source only. But that introduces an issue to the processing logic, as
 #-- Terraform requires compartments to be known at plan time, because compartment names are used as map keys by the module. 

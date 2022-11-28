@@ -36,6 +36,7 @@ No modules.
 | <a name="input_freeform_tags"></a> [freeform\_tags](#input\_freeform\_tags) | Any freeform tags to apply on the template (pre-configured) policies. | `map(string)` | `null` | no |
 | <a name="input_groups_with_tenancy_level_roles"></a> [groups\_with\_tenancy\_level\_roles](#input\_groups\_with\_tenancy\_level\_roles) | A list of group names and their roles at the root compartment (a.k.a tenancy) level. Pre-configured policies are assigned to each group in the root compartment. Only applicable if variable enable\_tenancy\_level\_policies is set to true. | <pre>list(object({<br>    name = string<br>    roles = string<br>  }))</pre> | `[]` | no |
 | <a name="input_policy_name_prefix"></a> [policy\_name\_prefix](#input\_policy\_name\_prefix) | A string used as naming prefix to template (pre-configured) policy names. | `string` | `null` | no |
+| <a name="input_target_compartments"></a> [target\_compartments](#input\_target\_compartments) | List of compartments that are policy targets. | <pre>list(object({<br>    name = string<br>    id = string<br>    freeform_tags = map(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_tenancy_id"></a> [tenancy\_id](#input\_tenancy\_id) | The tenancy ocid. | `string` | n/a | yes |
 
 ## Outputs

@@ -88,4 +88,5 @@ variable "compartments" {
     id = string
     freeform_tags = map(string)
   }))
+  default = []
 }

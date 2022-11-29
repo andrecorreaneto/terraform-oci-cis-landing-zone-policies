@@ -5,5 +5,5 @@
 **/.DS_Store
 **/crash.log
 *.pem
-**/terraform.tfvars*
+**/terraform.tfvars
 **/*.old

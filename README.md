@@ -25,7 +25,6 @@
  
  - *target_compartments* input variable: a list of compartments with name, id and freeform tags attributes set.
  - internal data source: module retrieves all compartments and filter out those that have the *cislz* freeform tag value matching *cislz_tag_lookup_value* input variable.
-**
  
  **Note:** *target_compartments* takes precedence over the data source. If *target_compartments* is not set, the data source is used.
 

@@ -12,7 +12,7 @@ variable "enable_compartment_level_template_policies" {
   default = true
 }
 
-#-- TLDR;
+#-- TL;DR
 #-- When using this module in the same Terraform configuration used to manage compartments, provide compartments via target_compartments variable.
 #-- When using this module in stand alone mode, you don't need to use target_compartments variable. The module will obtain compartments from a data source.
 #--

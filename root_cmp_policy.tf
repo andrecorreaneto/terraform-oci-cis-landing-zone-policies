@@ -86,7 +86,7 @@ locals {
     "allow group ${local.group_role_to_name_map[local.security_role]} to manage repos in tenancy",
     "allow group ${local.group_role_to_name_map[local.security_role]} to read audit-events in tenancy",
     "allow group ${local.group_role_to_name_map[local.security_role]} to read app-catalog-listing in tenancy",
-    "allow group ${local.group_role_to_name_map[local.security_role]} to read instance-images in tenancy}",
+    "allow group ${local.group_role_to_name_map[local.security_role]} to read instance-images in tenancy",
     "allow group ${local.group_role_to_name_map[local.security_role]} to inspect buckets in tenancy"
   ] : []  
 
